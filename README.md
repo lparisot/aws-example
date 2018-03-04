@@ -48,9 +48,9 @@ event will contains something like that:
 
 ## Add a model:
 
-    http://json-schema.org/
+See http://json-schema.org/
 
-    https://spacetelescope.github.io/understanding-json-schema/
+And     https://spacetelescope.github.io/understanding-json-schema/
 
 Select Models :
 
