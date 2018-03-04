@@ -96,3 +96,55 @@ In the POST integration request:
         {
             "type": "$input.params('type')"
         }
+
+## DynamoDB
+
+https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html
+
+You need to create a table called "compare-yourself" (go to DynamoDB/create table named compare-yourself with a partition key named UserId).
+
+### Read in table
+
+Create a policy to read data in the compare-yourself table:
+  go to IAM/Policies,
+  Create policy
+  Service = DynamoDB
+  Actions = select scan and getitem
+  Resources = ARN of your DynamoDB table found in its overview
+  Give name dynamodb-get-scan
+
+Create a new role named cy-get-data-role and attach dynamodb-get-scan policy to it.
+
+Attach also AWSLambdaBasicExecutionRole to it, to add the permission to create logs.
+
+In lambda cy-get-data select cy-get-data-role as execution role.
+
+### Write in table
+
+Create a policy to write data in the compare-yourself table:
+  go to IAM/Policies,
+  Create policy
+  Service = DynamoDB
+  Actions = select putitem
+  Resources = ARN of your DynamoDB table found in its overview
+  Give name dynamodb-putitem
+
+Attach dynamodb-putitem policy to cy-store-data-role.
+
+In lambda cy-store-data select cy-store-data-role as execution role.
+
+### Delete in table
+
+Create a policy to delete data in the compare-yourself table:
+  go to IAM/Policies,
+  Create policy
+  Service = DynamoDB
+  Actions = select deleteitem
+  Resources = ARN of your DynamoDB table found in its overview
+  Give name dynamodb-deleteitem
+
+Create a new role named cy-delete-data-role and attach dynamodb-deleteitem policy to it.
+
+Attach also AWSLambdaBasicExecutionRole to it, to add the permission to create logs.
+
+In lambda cy-delete-data select cy-delete-data-role as execution role.

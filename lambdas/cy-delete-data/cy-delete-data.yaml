@@ -11,7 +11,7 @@ Resources:
       Description: ''
       MemorySize: 128
       Timeout: 3
-      Role: 'arn:aws:iam::236064085683:role/service-role/cy-store-data-role'
+      Role: 'arn:aws:iam::YOUR-ACCOUNT-ID:role/cy-delete-data-role'
       Events:
         Api1:
           Type: Api

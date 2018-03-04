@@ -1,10 +1,10 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "2018-03-04T09:24:26Z",
+    "version": "2018-03-04T14:31:51Z",
     "title": "compare-yourself"
   },
-  "host": "12nfruwte4.execute-api.eu-west-3.amazonaws.com",
+  "host": "HOST.execute-api.YOUR-REGION.amazonaws.com",
   "basePath": "/dev",
   "schemes": [
     "https"
@@ -54,11 +54,11 @@
               }
             }
           },
-          "uri": "arn:aws:apigateway:eu-west-3:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-3:236064085683:function:cy-store-data/invocations",
+          "uri": "arn:aws:apigateway:YOUR-REGION:lambda:path/2015-03-31/functions/arn:aws:lambda:YOUR-REGION:YOUR-ACCOUNT-ID:function:cy-store-data/invocations",
           "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
           "requestTemplates": {
-            "application/json": "#set($inputRoot = $input.path('$'))\n{\n  \"age\" : $inputRoot.age,\n  \"height\" : $inputRoot.height,\n  \"income\" : $inputRoot.income\n}"
+            "application/json": "#set($inputRoot = $input.path('$'))\n{\n  \"age\" : \"$inputRoot.age\",\n  \"height\" : \"$inputRoot.height\",\n  \"income\" : \"$inputRoot.income\"\n}"
           },
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
@@ -90,7 +90,7 @@
               }
             }
           },
-          "uri": "arn:aws:apigateway:eu-west-3:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-3:236064085683:function:cy-delete-data/invocations",
+          "uri": "arn:aws:apigateway:YOUR-REGION:lambda:path/2015-03-31/functions/arn:aws:lambda:YOUR-REGION:YOUR-ACCOUNT-ID:function:cy-delete-data/invocations",
           "passthroughBehavior": "when_no_match",
           "httpMethod": "POST",
           "contentHandling": "CONVERT_TO_TEXT",
@@ -162,7 +162,7 @@
           "200": {
             "description": "200 response",
             "schema": {
-              "$ref": "#/definitions/Empty"
+              "$ref": "#/definitions/CompareDataArray"
             },
             "headers": {
               "Access-Control-Allow-Origin": {
@@ -177,10 +177,13 @@
               "statusCode": "200",
               "responseParameters": {
                 "method.response.header.Access-Control-Allow-Origin": "'*'"
+              },
+              "responseTemplates": {
+                "application/json": "#set($inputRoot = $input.path('$'))\n[\n##TODO: Update this foreach loop to reference array from input json\n#foreach($elem in $inputRoot)\n {\n  \"age\" : $elem.age,\n  \"height\" : $elem.height,\n  \"income\" : $elem.income\n} \n#if($foreach.hasNext),#end\n#end\n]"
               }
             }
           },
-          "uri": "arn:aws:apigateway:eu-west-3:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-3:236064085683:function:cy-get-data/invocations",
+          "uri": "arn:aws:apigateway:YOUR-REGION:lambda:path/2015-03-31/functions/arn:aws:lambda:YOUR-REGION:YOUR-ACCOUNT-ID:function:cy-get-data/invocations",
           "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
           "requestTemplates": {
@@ -260,6 +263,29 @@
     "Empty": {
       "type": "object",
       "title": "Empty Schema"
+    },
+    "CompareDataArray": {
+      "title": "CompareDataArray",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "age": {
+            "type": "integer"
+          },
+          "height": {
+            "type": "integer"
+          },
+          "income": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "age",
+          "height",
+          "income"
+        ]
+      }
     }
   },
   "x-amazon-apigateway-request-validators": {

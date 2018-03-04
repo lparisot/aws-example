@@ -1,5 +1,5 @@
 var xhr = new XMLHttpRequest();
-xhr.open('POST', 'https://12nfruwte4.execute-api.eu-west-3.amazonaws.com/dev/compare-yourself');
+xhr.open('POST', 'https://HOST.execute-api.YOUR-REGION.amazonaws.com/dev/compare-yourself');
 xhr.onreadystatechange = function(event) {
   console.log(event.target.response);
 }

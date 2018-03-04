@@ -1,10 +1,10 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "2018-03-04T09:24:26Z",
+    "version": "2018-03-04T14:31:51Z",
     "title": "compare-yourself"
   },
-  "host": "12nfruwte4.execute-api.eu-west-3.amazonaws.com",
+  "host": "HOST.execute-api.YOUR-REGION.amazonaws.com",
   "basePath": "/dev",
   "schemes": [
     "https"
@@ -108,7 +108,7 @@
           "200": {
             "description": "200 response",
             "schema": {
-              "$ref": "#/definitions/Empty"
+              "$ref": "#/definitions/CompareDataArray"
             },
             "headers": {
               "Access-Control-Allow-Origin": {
@@ -171,6 +171,29 @@
     "Empty": {
       "type": "object",
       "title": "Empty Schema"
+    },
+    "CompareDataArray": {
+      "title": "CompareDataArray",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "age": {
+            "type": "integer"
+          },
+          "height": {
+            "type": "integer"
+          },
+          "income": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "age",
+          "height",
+          "income"
+        ]
+      }
     }
   }
 }
