@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "2018-03-04T14:31:51Z",
+    "version": "2018-03-04T16:37:40Z",
     "title": "compare-yourself"
   },
   "host": "HOST.execute-api.YOUR-REGION.amazonaws.com",
@@ -41,6 +41,11 @@
             }
           }
         },
+        "security": [
+          {
+            "simple-custom-auth": []
+          }
+        ],
         "x-amazon-apigateway-request-validator": "Validate body",
         "x-amazon-apigateway-integration": {
           "responses": {
@@ -54,11 +59,11 @@
               }
             }
           },
-          "uri": "arn:aws:apigateway:YOUR-REGION:lambda:path/2015-03-31/functions/arn:aws:lambda:YOUR-REGION:YOUR-ACCOUNT-ID:function:cy-store-data/invocations",
+          "uri": "arn:aws:apigateway:YOUR-REGION:lambda:path/2015-03-31/functions/arn:aws:lambda:YOUR-REGION:YOUR-ACCOUNTID:function:cy-store-data/invocations",
           "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
           "requestTemplates": {
-            "application/json": "#set($inputRoot = $input.path('$'))\n{\n  \"age\" : \"$inputRoot.age\",\n  \"height\" : \"$inputRoot.height\",\n  \"income\" : \"$inputRoot.income\"\n}"
+            "application/json": "#set($inputRoot = $input.path('$'))\n{\n  \"age\" : \"$inputRoot.age\",\n  \"height\" : \"$inputRoot.height\",\n  \"income\" : \"$inputRoot.income\",\n  \"userId\" : \"$context.authorizer.principalId\"\n}"
           },
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
@@ -90,7 +95,7 @@
               }
             }
           },
-          "uri": "arn:aws:apigateway:YOUR-REGION:lambda:path/2015-03-31/functions/arn:aws:lambda:YOUR-REGION:YOUR-ACCOUNT-ID:function:cy-delete-data/invocations",
+          "uri": "arn:aws:apigateway:YOUR-REGION:lambda:path/2015-03-31/functions/arn:aws:lambda:YOUR-REGION:YOUR-ACCOUNTID:function:cy-delete-data/invocations",
           "passthroughBehavior": "when_no_match",
           "httpMethod": "POST",
           "contentHandling": "CONVERT_TO_TEXT",
@@ -162,7 +167,7 @@
           "200": {
             "description": "200 response",
             "schema": {
-              "$ref": "#/definitions/CompareDataArray"
+              "$ref": "#/definitions/Array"
             },
             "headers": {
               "Access-Control-Allow-Origin": {
@@ -183,7 +188,7 @@
               }
             }
           },
-          "uri": "arn:aws:apigateway:YOUR-REGION:lambda:path/2015-03-31/functions/arn:aws:lambda:YOUR-REGION:YOUR-ACCOUNT-ID:function:cy-get-data/invocations",
+          "uri": "arn:aws:apigateway:YOUR-REGION:lambda:path/2015-03-31/functions/arn:aws:lambda:YOUR-REGION:YOUR-ACCOUNTID:function:cy-get-data/invocations",
           "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
           "requestTemplates": {
@@ -236,6 +241,19 @@
           },
           "type": "mock"
         }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "simple-custom-auth": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "x-amazon-apigateway-authtype": "custom",
+      "x-amazon-apigateway-authorizer": {
+        "authorizerUri": "arn:aws:apigateway:YOUR-REGION:lambda:path/2015-03-31/functions/arn:aws:lambda:YOUR-REGION:YOUR-ACCOUNTID:function:cy-custom-auth/invocations",
+        "authorizerResultTtlInSeconds": 300,
+        "type": "token"
       }
     }
   },

@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "2018-03-04T14:31:51Z",
+    "version": "2018-03-04T16:37:40Z",
     "title": "compare-yourself"
   },
   "host": "HOST.execute-api.YOUR-REGION.amazonaws.com",
@@ -40,7 +40,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "simple-custom-auth": []
+          }
+        ]
       },
       "delete": {
         "produces": [
@@ -145,6 +150,14 @@
           }
         }
       }
+    }
+  },
+  "securityDefinitions": {
+    "simple-custom-auth": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "x-amazon-apigateway-authtype": "custom"
     }
   },
   "definitions": {

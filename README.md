@@ -148,3 +148,15 @@ Create a new role named cy-delete-data-role and attach dynamodb-deleteitem polic
 Attach also AWSLambdaBasicExecutionRole to it, to add the permission to create logs.
 
 In lambda cy-delete-data select cy-delete-data-role as execution role.
+
+## Using API gateway custom authorizers
+
+See https://docs.aws.amazon.com/apigateway/latest/developerguide/use-custom-authorizer.html
+
+Create under Authorizers a new authorizer named simple-custom-auth.
+
+It will use cy-custom-auth as lambda function.
+
+As lambda event payload, use a token with token source = Authorization.
+
+Test using codepen-with-headers-and-data-custom-auth.js file.
