@@ -160,3 +160,13 @@ It will use cy-custom-auth as lambda function.
 As lambda event payload, use a token with token source = Authorization.
 
 Test using codepen-with-headers-and-data-custom-auth.js file.
+
+## Authorization with Cognito
+
+https://aws.amazon.com/fr/cognito/
+
+https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-identity-pools.html
+
+https://aws.amazon.com/cognito/pricing
+
+https://github.com/aws/aws-amplify/tree/master/packages/amazon-cognito-identity-js
