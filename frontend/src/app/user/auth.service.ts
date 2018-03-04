@@ -5,16 +5,29 @@ import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
+import { CognitoUserPool, CognitoUserAttribute, CognitoUser } from 'amazon-cognito-identity-js';
+
 import { User } from './user.model';
+
+// see https://github.com/aws/aws-amplify/tree/master/packages/amazon-cognito-identity-js
+// Use case 1
+const POOL_DATA = {
+  UserPoolId: 'eu-west-1_dYplhlFIS', // found in general settings, Pool Id
+  ClientId: '1cnb3r9slrj509rc2nj364f60l' // found in general settings/App clients, App client id
+};
+const userPool = new CognitoUserPool(POOL_DATA);
 
 @Injectable()
 export class AuthService {
   authIsLoading = new BehaviorSubject<boolean>(false);
   authDidFail = new BehaviorSubject<boolean>(false);
   authStatusChanged = new Subject<boolean>();
+  registeredUser: CognitoUser;
 
   constructor(private router: Router) {}
 
+  // see https://github.com/aws/aws-amplify/tree/master/packages/amazon-cognito-identity-js
+  // Use case 1
   signUp(username: string, email: string, password: string): void {
     this.authIsLoading.next(true);
     const user: User = {
@@ -22,17 +35,44 @@ export class AuthService {
       email: email,
       password: password
     };
+    const attributeList: CognitoUserAttribute[] = [];
     const emailAttribute = {
       Name: 'email',
       Value: user.email
     };
+    attributeList.push(new CognitoUserAttribute(emailAttribute));
+
+    userPool.signUp(user.username, user.password, attributeList, null, (err, result) => {
+      if (err) {
+        this.authDidFail.next(true);
+        this.authIsLoading.next(false);
+        return;
+      }
+      this.authDidFail.next(false);
+      this.authIsLoading.next(false);
+      this.registeredUser = result.user;
+    });
     return;
   }
+  // see https://github.com/aws/aws-amplify/tree/master/packages/amazon-cognito-identity-js
+  // Use case 2
   confirmUser(username: string, code: string) {
     this.authIsLoading.next(true);
     const userData = {
       Username: username,
+      Pool: userPool
     };
+    const cognitoUser = new CognitoUser(userData);
+    cognitoUser.confirmRegistration(code, true, (err, result) => {
+      if (err) {
+        this.authDidFail.next(true);
+        this.authIsLoading.next(false);
+        return;
+      }
+      this.authDidFail.next(false);
+      this.authIsLoading.next(false);
+      this.router.navigate(['/']);
+    });
   }
   signIn(username: string, password: string): void {
     this.authIsLoading.next(true);
