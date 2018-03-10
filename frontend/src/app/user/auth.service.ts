@@ -5,15 +5,19 @@ import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import { CognitoUserPool, CognitoUserAttribute, CognitoUser } from 'amazon-cognito-identity-js';
+import {
+  CognitoUserPool, CognitoUserSession,
+  CognitoUserAttribute, CognitoUser,
+  AuthenticationDetails
+} from 'amazon-cognito-identity-js';
 
 import { User } from './user.model';
 
 // see https://github.com/aws/aws-amplify/tree/master/packages/amazon-cognito-identity-js
 // Use case 1
 const POOL_DATA = {
-  UserPoolId: 'eu-west-1_dYplhlFIS', // found in general settings, Pool Id
-  ClientId: '1cnb3r9slrj509rc2nj364f60l' // found in general settings/App clients, App client id
+  UserPoolId: 'eu-west-1_d1qZm9x2k', // found in general settings, Pool Id
+  ClientId: '5p68ek99o9qudmd6l9biu1hibb' // found in general settings/App clients, App client id
 };
 const userPool = new CognitoUserPool(POOL_DATA);
 
@@ -80,7 +84,27 @@ export class AuthService {
       Username: username,
       Password: password
     };
-    this.authStatusChanged.next(true);
+    const authDetails = new AuthenticationDetails(authData);
+    const userData = {
+      Username : username,
+      Pool : userPool
+    };
+    const cognitoUser = new CognitoUser(userData);
+    const that = this;
+    cognitoUser.authenticateUser(authDetails, {
+        onSuccess (result: CognitoUserSession) {
+          that.authStatusChanged.next(true);
+          that.authDidFail.next(false);
+          that.authIsLoading.next(false);
+          console.log(result);
+        },
+
+        onFailure (err) {
+          that.authDidFail.next(true);
+          that.authIsLoading.next(false);
+          console.log(err);
+        }
+    });
     return;
   }
   getAuthenticatedUser() {

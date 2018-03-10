@@ -170,3 +170,12 @@ https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-identity-
 https://aws.amazon.com/cognito/pricing
 
 https://github.com/aws/aws-amplify/tree/master/packages/amazon-cognito-identity-js
+
+### Create a user pool
+
+Give it compare-yourself as name and click on "Step through settings".
+
+Keep all by default except for "App clients".
+
+Add an app client with "app client name" equal to compare-yourself-angular.
+Disable "Generate client secret".
