@@ -1,10 +1,10 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "2018-03-04T16:37:40Z",
+    "version": "2018-03-10T18:05:05Z",
     "title": "compare-yourself"
   },
-  "host": "HOST.execute-api.YOUR-REGION.amazonaws.com",
+  "host": "HOST.execute-api.REGION.amazonaws.com",
   "basePath": "/dev",
   "schemes": [
     "https"
@@ -43,7 +43,7 @@
         },
         "security": [
           {
-            "simple-custom-auth": []
+            "compare-yourself-user-pool": []
           }
         ]
       },
@@ -63,7 +63,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "compare-yourself-user-pool": []
+          }
+        ]
       },
       "options": {
         "consumes": [
@@ -121,7 +126,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "compare-yourself-user-pool": []
+          }
+        ]
       },
       "options": {
         "consumes": [
@@ -153,11 +163,11 @@
     }
   },
   "securityDefinitions": {
-    "simple-custom-auth": {
+    "compare-yourself-user-pool": {
       "type": "apiKey",
       "name": "Authorization",
       "in": "header",
-      "x-amazon-apigateway-authtype": "custom"
+      "x-amazon-apigateway-authtype": "cognito_user_pools"
     }
   },
   "definitions": {

@@ -78,6 +78,8 @@ export class AuthService {
       this.router.navigate(['/']);
     });
   }
+  // see https://github.com/aws/aws-amplify/tree/master/packages/amazon-cognito-identity-js
+  // Use case 4. Authenticating a user and establishing a user session with the Amazon Cognito Identity service.
   signIn(username: string, password: string): void {
     this.authIsLoading.next(true);
     const authData = {
@@ -107,9 +109,13 @@ export class AuthService {
     });
     return;
   }
+  //Use case 16. Retrieving the current user from local storage.
   getAuthenticatedUser() {
+    return userPool.getCurrentUser();
   }
+  // Use case 14. Signing out from the application.
   logout() {
+    this.getAuthenticatedUser().signOut();
     this.authStatusChanged.next(false);
   }
   isAuthenticated(): Observable<boolean> {
@@ -118,7 +124,17 @@ export class AuthService {
       if (!user) {
         observer.next(false);
       } else {
-        observer.next(false);
+        user.getSession((err, session) => {
+          if (err) {
+            observer.next(false);
+          } else {
+            if (session.isValid()) {
+              observer.next(true);
+            } else {
+              observer.next(false);
+            }
+          }
+        });
       }
       observer.complete();
     });

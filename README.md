@@ -179,3 +179,15 @@ Keep all by default except for "App clients".
 
 Add an app client with "app client name" equal to compare-yourself-angular.
 Disable "Generate client secret".
+
+### Create a new authorizer
+
+Named compare-yourself-user-pool, with token source = Authorization and select your user pool.
+
+To protect your API and request the user to be authenticated:
+
+In the POST method of /compare-yourself resource, in Method Request, change Authorization and select compare-yourself-user-pool.
+
+Same for DELETE method of /compare-yourself resource.
+
+Same for GET method of /compare-yourself/{type} resource.

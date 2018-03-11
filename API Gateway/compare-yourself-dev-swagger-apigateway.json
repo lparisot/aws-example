@@ -1,10 +1,10 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "2018-03-04T16:37:40Z",
+    "version": "2018-03-10T18:05:05Z",
     "title": "compare-yourself"
   },
-  "host": "HOST.execute-api.YOUR-REGION.amazonaws.com",
+  "host": "HOST.execute-api.REGION.amazonaws.com",
   "basePath": "/dev",
   "schemes": [
     "https"
@@ -43,7 +43,7 @@
         },
         "security": [
           {
-            "simple-custom-auth": []
+            "compare-yourself-user-pool": []
           }
         ],
         "x-amazon-apigateway-request-validator": "Validate body",
@@ -59,11 +59,11 @@
               }
             }
           },
-          "uri": "arn:aws:apigateway:YOUR-REGION:lambda:path/2015-03-31/functions/arn:aws:lambda:YOUR-REGION:YOUR-ACCOUNTID:function:cy-store-data/invocations",
+          "uri": "arn:aws:apigateway:REGION:lambda:path/2015-03-31/functions/arn:aws:lambda:REGION:ACCOUNT-ID:function:cy-store-data/invocations",
           "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
           "requestTemplates": {
-            "application/json": "#set($inputRoot = $input.path('$'))\n{\n  \"age\" : \"$inputRoot.age\",\n  \"height\" : \"$inputRoot.height\",\n  \"income\" : \"$inputRoot.income\",\n  \"userId\" : \"$context.authorizer.principalId\"\n}"
+            "application/json": "#set($inputRoot = $input.path('$'))\n{\n  \"age\" : \"$inputRoot.age\",\n  \"height\" : \"$inputRoot.height\",\n  \"income\" : \"$inputRoot.income\",\n  \"userId\" : \"$context.authorizer.claims.sub\"\n}"
           },
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
@@ -86,6 +86,11 @@
             }
           }
         },
+        "security": [
+          {
+            "compare-yourself-user-pool": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "responses": {
             "default": {
@@ -95,7 +100,7 @@
               }
             }
           },
-          "uri": "arn:aws:apigateway:YOUR-REGION:lambda:path/2015-03-31/functions/arn:aws:lambda:YOUR-REGION:YOUR-ACCOUNTID:function:cy-delete-data/invocations",
+          "uri": "arn:aws:apigateway:REGION:lambda:path/2015-03-31/functions/arn:aws:lambda:REGION:ACCOUNT-ID:function:cy-delete-data/invocations",
           "passthroughBehavior": "when_no_match",
           "httpMethod": "POST",
           "contentHandling": "CONVERT_TO_TEXT",
@@ -134,7 +139,7 @@
               "statusCode": "200",
               "responseParameters": {
                 "method.response.header.Access-Control-Allow-Methods": "'DELETE,POST,OPTIONS'",
-                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-XSRF-TOKEN'",
                 "method.response.header.Access-Control-Allow-Origin": "'*'"
               }
             }
@@ -167,7 +172,7 @@
           "200": {
             "description": "200 response",
             "schema": {
-              "$ref": "#/definitions/Array"
+              "$ref": "#/definitions/CompareDataArray"
             },
             "headers": {
               "Access-Control-Allow-Origin": {
@@ -176,6 +181,11 @@
             }
           }
         },
+        "security": [
+          {
+            "compare-yourself-user-pool": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "responses": {
             "default": {
@@ -188,7 +198,7 @@
               }
             }
           },
-          "uri": "arn:aws:apigateway:YOUR-REGION:lambda:path/2015-03-31/functions/arn:aws:lambda:YOUR-REGION:YOUR-ACCOUNTID:function:cy-get-data/invocations",
+          "uri": "arn:aws:apigateway:REGION:lambda:path/2015-03-31/functions/arn:aws:lambda:REGION:ACCOUNT-ID:function:cy-get-data/invocations",
           "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
           "requestTemplates": {
@@ -245,15 +255,16 @@
     }
   },
   "securityDefinitions": {
-    "simple-custom-auth": {
+    "compare-yourself-user-pool": {
       "type": "apiKey",
       "name": "Authorization",
       "in": "header",
-      "x-amazon-apigateway-authtype": "custom",
+      "x-amazon-apigateway-authtype": "cognito_user_pools",
       "x-amazon-apigateway-authorizer": {
-        "authorizerUri": "arn:aws:apigateway:YOUR-REGION:lambda:path/2015-03-31/functions/arn:aws:lambda:YOUR-REGION:YOUR-ACCOUNTID:function:cy-custom-auth/invocations",
-        "authorizerResultTtlInSeconds": 300,
-        "type": "token"
+        "providerARNs": [
+          "arn:aws:cognito-idp:eu-west-1:ACCOUNT-ID:userpool/eu-west-1_d1qZm9x2k"
+        ],
+        "type": "cognito_user_pools"
       }
     }
   },
