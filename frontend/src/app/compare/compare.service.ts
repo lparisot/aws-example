@@ -29,7 +29,7 @@ export class CompareService {
         return;
       }
       // https://API_ID.execute-api.REGION.amazonaws.com/dev/compare-yourself
-      this.http.post('https://12nfruwte4.execute-api.eu-west-3.amazonaws.com/dev/compare-yourself', data, {
+      this.http.post('https://API_ID.execute-api.REGION.amazonaws.com/dev/compare-yourself', data, {
         headers: new Headers({'Authorization': session.getIdToken().getJwtToken()})
       })
         .subscribe(
@@ -60,7 +60,7 @@ export class CompareService {
         urlParam = 'single';
       }
       // https://API_ID.execute-api.REGION.amazonaws.com/dev/compare-yourself/
-      this.http.get('https://12nfruwte4.execute-api.eu-west-3.amazonaws.com/dev/compare-yourself/' + urlParam + queryParam, {
+      this.http.get('https://API_ID.execute-api.REGION.amazonaws.com/dev/compare-yourself/' + urlParam + queryParam, {
         headers: new Headers({'Authorization': session.getIdToken().getJwtToken()})
       })
         .map(
@@ -85,12 +85,19 @@ export class CompareService {
             this.dataLoaded.next(null);
           }
         );
-      });
+    });
   }
   onDeleteData() {
     this.dataLoadFailed.next(false);
-      this.http.delete('https://API_ID.execute-api.REGION.amazonaws.com/dev/', {
-        headers: new Headers({'Authorization': 'XXX'})
+    this.authService.getAuthenticatedUser().getSession((err, session) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      const queryParam = '?accessToken=' + 'XXX'; // we don't use accessToken
+      // https://API_ID.execute-api.REGION.amazonaws.com/dev/compare-yourself
+      this.http.delete('https://API_ID.execute-api.REGION.amazonaws.com/dev/compare-yourself' + queryParam, {
+        headers: new Headers({'Authorization': session.getIdToken().getJwtToken()})
       })
         .subscribe(
           (data) => {
@@ -98,5 +105,6 @@ export class CompareService {
           },
           (error) => this.dataLoadFailed.next(true)
         );
+    });
   }
 }

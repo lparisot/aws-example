@@ -1,10 +1,10 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "2018-03-11T09:44:26Z",
+    "version": "2018-03-11T10:51:21Z",
     "title": "compare-yourself"
   },
-  "host": "12nfruwte4.execute-api.eu-west-3.amazonaws.com",
+  "host": "HOST.execute-api.REGION.amazonaws.com",
   "basePath": "/dev",
   "schemes": [
     "https"
@@ -59,7 +59,7 @@
               }
             }
           },
-          "uri": "arn:aws:apigateway:eu-west-3:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-3:236064085683:function:cy-store-data/invocations",
+          "uri": "arn:aws:apigateway:REGION:lambda:path/2015-03-31/functions/arn:aws:lambda:REGION:ACCOUNT-ID:function:cy-store-data/invocations",
           "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
           "requestTemplates": {
@@ -70,6 +70,9 @@
         }
       },
       "delete": {
+        "consumes": [
+          "application/json"
+        ],
         "produces": [
           "application/json"
         ],
@@ -109,9 +112,12 @@
               }
             }
           },
-          "uri": "arn:aws:apigateway:eu-west-3:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-3:236064085683:function:cy-delete-data/invocations",
-          "passthroughBehavior": "when_no_match",
+          "uri": "arn:aws:apigateway:REGION:lambda:path/2015-03-31/functions/arn:aws:lambda:REGION:ACCOUNT-ID:function:cy-delete-data/invocations",
+          "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
+          "requestTemplates": {
+            "application/json": "{\n  \"userId\" : \"$context.authorizer.claims.sub\"\n}"
+          },
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
         }
@@ -214,7 +220,7 @@
               }
             }
           },
-          "uri": "arn:aws:apigateway:eu-west-3:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-3:236064085683:function:cy-get-data/invocations",
+          "uri": "arn:aws:apigateway:REGION:lambda:path/2015-03-31/functions/arn:aws:lambda:REGION:ACCOUNT-ID:function:cy-get-data/invocations",
           "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
           "requestTemplates": {
@@ -256,7 +262,7 @@
               "statusCode": "200",
               "responseParameters": {
                 "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
-                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-XSRF-TOKEN'",
                 "method.response.header.Access-Control-Allow-Origin": "'*'"
               }
             }
@@ -278,7 +284,7 @@
       "x-amazon-apigateway-authtype": "cognito_user_pools",
       "x-amazon-apigateway-authorizer": {
         "providerARNs": [
-          "arn:aws:cognito-idp:eu-west-1:236064085683:userpool/eu-west-1_d1qZm9x2k"
+          "arn:aws:cognito-idp:eu-west-1:ACCOUNT-ID:userpool/eu-west-1_d1qZm9x2k"
         ],
         "type": "cognito_user_pools"
       }

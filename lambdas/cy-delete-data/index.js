@@ -5,7 +5,7 @@ exports.handler = (event, context, callback) => {
     const params = {
         Key: {
             "UserId": {
-                S: "user_0.8254038501376844"
+                S: event.userId
             }
         },
         TableName: "compare-yourself"

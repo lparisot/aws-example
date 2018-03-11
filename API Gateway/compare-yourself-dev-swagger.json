@@ -1,10 +1,10 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "2018-03-11T09:44:26Z",
+    "version": "2018-03-11T10:51:21Z",
     "title": "compare-yourself"
   },
-  "host": "12nfruwte4.execute-api.eu-west-3.amazonaws.com",
+  "host": "HOST.execute-api.REGION.amazonaws.com",
   "basePath": "/dev",
   "schemes": [
     "https"
@@ -48,6 +48,9 @@
         ]
       },
       "delete": {
+        "consumes": [
+          "application/json"
+        ],
         "produces": [
           "application/json"
         ],
