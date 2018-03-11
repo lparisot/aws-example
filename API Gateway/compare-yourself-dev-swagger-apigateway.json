@@ -1,10 +1,10 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "2018-03-10T18:05:05Z",
+    "version": "2018-03-11T09:44:26Z",
     "title": "compare-yourself"
   },
-  "host": "HOST.execute-api.REGION.amazonaws.com",
+  "host": "12nfruwte4.execute-api.eu-west-3.amazonaws.com",
   "basePath": "/dev",
   "schemes": [
     "https"
@@ -59,7 +59,7 @@
               }
             }
           },
-          "uri": "arn:aws:apigateway:REGION:lambda:path/2015-03-31/functions/arn:aws:lambda:REGION:ACCOUNT-ID:function:cy-store-data/invocations",
+          "uri": "arn:aws:apigateway:eu-west-3:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-3:236064085683:function:cy-store-data/invocations",
           "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
           "requestTemplates": {
@@ -72,6 +72,14 @@
       "delete": {
         "produces": [
           "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "accessToken",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
         ],
         "responses": {
           "200": {
@@ -91,6 +99,7 @@
             "compare-yourself-user-pool": []
           }
         ],
+        "x-amazon-apigateway-request-validator": "Validate query string parameters and headers",
         "x-amazon-apigateway-integration": {
           "responses": {
             "default": {
@@ -100,7 +109,7 @@
               }
             }
           },
-          "uri": "arn:aws:apigateway:REGION:lambda:path/2015-03-31/functions/arn:aws:lambda:REGION:ACCOUNT-ID:function:cy-delete-data/invocations",
+          "uri": "arn:aws:apigateway:eu-west-3:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-3:236064085683:function:cy-delete-data/invocations",
           "passthroughBehavior": "when_no_match",
           "httpMethod": "POST",
           "contentHandling": "CONVERT_TO_TEXT",
@@ -166,6 +175,12 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "accessToken",
+            "in": "query",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
@@ -186,6 +201,7 @@
             "compare-yourself-user-pool": []
           }
         ],
+        "x-amazon-apigateway-request-validator": "Validate query string parameters and headers",
         "x-amazon-apigateway-integration": {
           "responses": {
             "default": {
@@ -198,11 +214,11 @@
               }
             }
           },
-          "uri": "arn:aws:apigateway:REGION:lambda:path/2015-03-31/functions/arn:aws:lambda:REGION:ACCOUNT-ID:function:cy-get-data/invocations",
+          "uri": "arn:aws:apigateway:eu-west-3:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-west-3:236064085683:function:cy-get-data/invocations",
           "passthroughBehavior": "when_no_templates",
           "httpMethod": "POST",
           "requestTemplates": {
-            "application/json": "{\n    \"type\": \"$input.params('type')\"\n}\n"
+            "application/json": "{\n    \"type\": \"$input.params('type')\",\n    \"accessToken\" : \"$input.params('accessToken')\"\n}\n"
           },
           "contentHandling": "CONVERT_TO_TEXT",
           "type": "aws"
@@ -262,7 +278,7 @@
       "x-amazon-apigateway-authtype": "cognito_user_pools",
       "x-amazon-apigateway-authorizer": {
         "providerARNs": [
-          "arn:aws:cognito-idp:eu-west-1:ACCOUNT-ID:userpool/eu-west-1_d1qZm9x2k"
+          "arn:aws:cognito-idp:eu-west-1:236064085683:userpool/eu-west-1_d1qZm9x2k"
         ],
         "type": "cognito_user_pools"
       }
@@ -321,6 +337,10 @@
     "Validate body": {
       "validateRequestParameters": false,
       "validateRequestBody": true
+    },
+    "Validate query string parameters and headers": {
+      "validateRequestParameters": true,
+      "validateRequestBody": false
     }
   }
 }

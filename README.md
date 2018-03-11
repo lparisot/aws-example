@@ -167,6 +167,8 @@ https://aws.amazon.com/fr/cognito/
 
 https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-identity-pools.html
 
+https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/CognitoIdentityServiceProvider.html
+
 https://aws.amazon.com/cognito/pricing
 
 https://github.com/aws/aws-amplify/tree/master/packages/amazon-cognito-identity-js

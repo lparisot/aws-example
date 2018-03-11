@@ -1,10 +1,10 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "2018-03-10T18:05:05Z",
+    "version": "2018-03-11T09:44:26Z",
     "title": "compare-yourself"
   },
-  "host": "HOST.execute-api.REGION.amazonaws.com",
+  "host": "12nfruwte4.execute-api.eu-west-3.amazonaws.com",
   "basePath": "/dev",
   "schemes": [
     "https"
@@ -50,6 +50,14 @@
       "delete": {
         "produces": [
           "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "accessToken",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
         ],
         "responses": {
           "200": {
@@ -110,6 +118,12 @@
           {
             "name": "type",
             "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "accessToken",
+            "in": "query",
             "required": true,
             "type": "string"
           }

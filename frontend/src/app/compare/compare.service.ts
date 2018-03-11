@@ -49,13 +49,19 @@ export class CompareService {
   onRetrieveData(all = true) {
     this.dataLoaded.next(null);
     this.dataLoadFailed.next(false);
-      let queryParam = '';
+    this.authService.getAuthenticatedUser().getSession((err, session) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      const queryParam = '?accessToken=' + session.getAccessToken().getJwtToken();
       let urlParam = 'all';
       if (!all) {
         urlParam = 'single';
       }
-      this.http.get('https://API_ID.execute-api.REGION.amazonaws.com/dev/' + urlParam + queryParam, {
-        headers: new Headers({'Authorization': 'XXX'})
+      // https://API_ID.execute-api.REGION.amazonaws.com/dev/compare-yourself/
+      this.http.get('https://12nfruwte4.execute-api.eu-west-3.amazonaws.com/dev/compare-yourself/' + urlParam + queryParam, {
+        headers: new Headers({'Authorization': session.getIdToken().getJwtToken()})
       })
         .map(
           (response: Response) => response.json()
@@ -79,6 +85,7 @@ export class CompareService {
             this.dataLoaded.next(null);
           }
         );
+      });
   }
   onDeleteData() {
     this.dataLoadFailed.next(false);
