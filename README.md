@@ -193,3 +193,21 @@ In the POST method of /compare-yourself resource, in Method Request, change Auth
 Same for DELETE method of /compare-yourself resource.
 
 Same for GET method of /compare-yourself/{type} resource.
+
+## S3
+
+https://docs.aws.amazon.com/AmazonS3/latest/dev/Welcome.html
+
+https://docs.aws.amazon.com/AmazonS3/latest/dev/s3-access-control.html
+
+https://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteHosting.html
+
+https://aws.amazon.com/s3/pricing/?nc1=h_ls
+
+We will use S3 to store our SPA.
+
+Create a bucket named <your domain>-compare-yourself.
+
+Create the single page application files by launching the command: npm run build.
+
+Upload the dist folder content into your bucket.
