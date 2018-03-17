@@ -204,10 +204,87 @@ https://docs.aws.amazon.com/AmazonS3/latest/dev/WebsiteHosting.html
 
 https://aws.amazon.com/s3/pricing/?nc1=h_ls
 
+### Store our SPA
+
 We will use S3 to store our SPA.
 
-Create a bucket named <your domain>-compare-yourself.
+Create a bucket named "your domain"-compare-yourself.
 
 Create the single page application files by launching the command: npm run build.
 
 Upload the dist folder content into your bucket.
+
+https://docs.aws.amazon.com/AmazonS3/latest/dev/example-bucket-policies.html#example-bucket-policies-use-case-2
+
+In Permissions, add a bucket policy to give read only access to your bucket:
+
+```json
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AddPerm",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::<your bucket name>/*"
+        }
+    ]
+  }
+```
+
+In Properties, select "Static website hosting", and "Use this bucket to host a website".
+For "Index document", enter index.html.
+For "Error document", enter also index.html.
+
+### Logging
+
+Create a bucket named "your domain"-compare-yourself.logs.
+
+In "your domain"-compare-yourself bucket, in Properties, select "Server access logging", select "Enable logging" and choose <your domain>-compare-yourself.logs bucket and set "Log Prefix" to log.
+
+## CloudFront
+
+https://aws.amazon.com/cloudfront/
+
+https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html
+
+https://aws.amazon.com/cloudfront/pricing/
+
+We will share our front application in all world by using CloudFront which will automatically distribute our bucket in all world.
+
+Select CloudFront service and create a new Web Distribution.
+
+Select the "Origin Domain Name" as "your domain"-compare-yourself.
+Leave all fields as they are except for:
+  * "Compress Objects Automatically" to Yes,
+  * "Default Root Object" to index.html,
+  * "Logging" to On
+  * "Bucket for Logs" to your logs bucket
+  * "Log Prefix" to cdn
+
+## Route 53
+
+https://aws.amazon.com/route53/
+
+https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/Welcome.html
+
+https://aws.amazon.com/route53/pricing/
+
+https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/registrar.html
+
+First you must registered a new domain in route 53 like compare-yourself.net.
+
+Then you must change your CloudFront distribution:
+
+Edit your distribution and in "Alternate Domain Names" add :
+```
+compare-yourself.net
+www.compare-yourself.net
+```
+
+In Route 53, select "Hosted zones" and create a new record set:
+
+Select type IPv4-address and alias=yes. You must select in "Alias target" the new alternate domain name created in your CloudFront distribution compare-yourself.net.
+
+Create another record set with name=www and alias www.compare-yourself
