@@ -297,6 +297,8 @@ Express wrapper : https://github.com/awslabs/aws-serverless-express
 
 ## Deploy easily
 
+### Serverless
+
 https://serverless.com/
 
 Install AWS CLI:
@@ -335,3 +337,13 @@ To remove:
 $ serverless remove
 ```
 You can remove by stage or region with --stage and --region options.
+
+### AWS SAM (serverless application model)
+
+https://github.com/awslabs/serverless-application-model
+
+### Testing with LocalStack
+
+To mock access to AWS and test cloud applications.
+
+https://github.com/localstack/localstack
