@@ -288,3 +288,50 @@ In Route 53, select "Hosted zones" and create a new record set:
 Select type IPv4-address and alias=yes. You must select in "Alias target" the new alternate domain name created in your CloudFront distribution compare-yourself.net.
 
 Create another record set with name=www and alias www.compare-yourself
+
+## AWS Serverless + Express Apps
+
+https://aws.amazon.com/blogs/compute/going-serverless-migrating-an-express-application-to-amazon-api-gateway-and-aws-lambda/
+
+Express wrapper : https://github.com/awslabs/aws-serverless-express
+
+## Deploy easily
+
+https://serverless.com/
+
+Install AWS CLI:
+```bash
+$ pip install awscli --upgrade --user
+```
+Add export PATH="~/.local/bin:$PATH" to your ~/.bash_profile file.
+
+Configure your AWS credentials:
+```bash
+$ aws configure
+AWS Access Key ID [None]: your key id
+AWS Secret Access Key [None]: your access key
+Default region name [None]: your region (i.e. us-west-2)
+Default output format [None]: ENTER
+```
+
+Install serverless:
+```bash
+$ npm install -g serverless
+```
+
+Create a service:
+```bash
+$ serverless create --template aws-nodejs --path my-service
+$ cd my-service
+```
+
+Deploy to a given stage in a given region:
+```bash
+$ serverless deploy --stage dev --region your-region -v
+```
+
+To remove:
+```bash
+$ serverless remove
+```
+You can remove by stage or region with --stage and --region options.
